@@ -128,6 +128,15 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+"@lxzxl/react-native-signature-panel@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/@lxzxl/react-native-signature-panel/-/react-native-signature-panel-1.1.0.tgz#7d01217b98b39497f81936434c71d4db880f5f34"
+  integrity sha512-J3W2clihPbC9SurMFbb4LGcZRvYVhXrnxC55j4DUyKfQxjiAkD55AmbpJ9xitUcMY2bM7sKcyGQxTwaRkMVbkg==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-svg "^11.0.1"
+    react-native-view-shot "^3.1.2"
+
 "@types/core-js@^2.5.2":
   version "2.5.3"
   resolved "https://registry.npmjs.org/@types/core-js/-/core-js-2.5.3.tgz#d2f307f708f897f875d312501e3b4a2fd4481d41"

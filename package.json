@@ -28,6 +28,7 @@
 	},
 	"homepage": "https://github.com/lxzxl/react-native-signature-panel#readme",
 	"dependencies": {
+		"@lxzxl/react-native-signature-panel": "^1.1.0",
 		"prop-types": "^15.6.2",
 		"react-native-svg": "^11.0.1",
 		"react-native-view-shot": "^3.1.2"
