@@ -10,7 +10,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/edanedison/react-native-signature-panel.git"
+		"url": "git+https://github.com/lxzxl/react-native-signature-panel.git"
 	},
 	"keywords": [
 		"react",
@@ -21,16 +21,16 @@
 		"pad",
 		"expo"
 	],
-	"author": "Edan Edison",
+	"author": "Steven Li",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/edanedison/react-native-signature-panel/issues"
+		"url": "https://github.com/lxzxl/react-native-signature-panel/issues"
 	},
-	"homepage": "https://github.com/edanedison/react-native-signature-panel#readme",
+	"homepage": "https://github.com/lxzxl/react-native-signature-panel#readme",
 	"dependencies": {
 		"prop-types": "^15.6.2",
-		"react-native-svg": "^9.9.5",
-		"react-native-view-shot": "^2.6.0"
+		"react-native-svg": "^11.0.1",
+		"react-native-view-shot": "^3.1.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.7.5",
