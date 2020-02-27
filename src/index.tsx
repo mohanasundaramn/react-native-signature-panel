@@ -22,7 +22,8 @@ interface SignaturePanelProps {
 	onFingerUp?: (...args: any[]) => any;
 	onTouch?: (...args: any[]) => any;
 	onTouchEnd?: (...args: any[]) => any;
-	imageOutputSize?: number;
+	imageOutputWidth?: number;
+	imageOutputHeight?: number;
 	imageQuality?: number;
 	imageFormat?: 'jpg' | 'png' | 'webm' | 'raw';
 	outputType?: 'tmpfile' | 'base64' | 'data-uri' | 'zip-base64';
@@ -39,7 +40,6 @@ class SignaturePanel extends React.Component<SignaturePanelProps, SignaturePanel
 	public static defaultProps: SignaturePanelProps = {
 		height: 300,
 		imageFormat: 'png',
-		imageOutputSize: 480,
 		imageQuality: 1,
 		offsetX: 0,
 		offsetY: 0,
@@ -97,7 +97,7 @@ class SignaturePanel extends React.Component<SignaturePanelProps, SignaturePanel
 			paths: [],
 			points: [],
 			posX: 0,
-			posY: 0
+			posY: 0,
 		});
 	}
 
@@ -207,21 +207,27 @@ class SignaturePanel extends React.Component<SignaturePanelProps, SignaturePanel
 	 */
 
 	private returnImageData({ paths, points }: { paths: any[]; points: any[] }) {
-		const { onFingerUp, imageFormat, outputType, imageOutputSize, imageQuality } = this.props;
+		const { onFingerUp, imageFormat, outputType, imageOutputHeight, imageOutputWidth, imageQuality } = this.props;
 		return () => {
 			if (!['jpg', 'png', 'webm', 'raw'].includes(imageFormat)) {
 				onFingerUp(this.renderSvg(paths, points));
 			} else {
+				const options: any = {
+					format: imageFormat,
+					quality: imageQuality,
+					result: outputType,
+				};
 				const pixelRatio = PixelRatio.get();
-				const pixels = imageOutputSize / pixelRatio;
+				if (imageOutputHeight) {
+					const heightPixel = imageOutputHeight / pixelRatio;
+					options.height = heightPixel;
+				}
+				if (imageOutputWidth) {
+					const widthPixel = imageOutputWidth / pixelRatio;
+					options.width = widthPixel;
+				}
 				SignaturePanel.timer = setTimeout(async () => {
-					const file = await takeSnapshotAsync(this.signatureContainer, {
-						format: imageFormat,
-						height: pixels,
-						quality: imageQuality,
-						result: outputType,
-						width: pixels,
-					});
+					const file = await takeSnapshotAsync(this.signatureContainer, options);
 					onFingerUp(file);
 					SignaturePanel.timer = null;
 				}, 1000);
