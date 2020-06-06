@@ -20,6 +20,7 @@ interface SignaturePanelProps {
 	strokeColor?: string;
 	strokeWidth?: number;
 	onFingerUp?: (...args: any[]) => any;
+	onFingerUpTimeout?: number;
 	onTouch?: (...args: any[]) => any;
 	onTouchEnd?: (...args: any[]) => any;
 	imageOutputWidth?: number;
@@ -44,6 +45,7 @@ class SignaturePanel extends React.Component<SignaturePanelProps, SignaturePanel
 		offsetX: 0,
 		offsetY: 0,
 		onFingerUp: () => {},
+		onFingerUpTimeout: 1000,
 		onTouch: () => {},
 		onTouchEnd: () => {},
 		outputType: 'tmpfile',
@@ -66,9 +68,9 @@ class SignaturePanel extends React.Component<SignaturePanelProps, SignaturePanel
 		};
 		this.panResponder = PanResponder.create({
 			onMoveShouldSetPanResponder: () => true,
-			onPanResponderGrant: e => this.onTouch(e),
-			onPanResponderMove: e => this.onTouch(e),
-			onPanResponderRelease: e => this.onTouchEnd(),
+			onPanResponderGrant: (e) => this.onTouch(e),
+			onPanResponderMove: (e) => this.onTouch(e),
+			onPanResponderRelease: (e) => this.onTouchEnd(),
 			onStartShouldSetPanResponder: () => true,
 		});
 	}
@@ -152,7 +154,7 @@ class SignaturePanel extends React.Component<SignaturePanelProps, SignaturePanel
 		const { posX, posY } = this.state;
 		if (points.length > 0) {
 			let path = `M ${points[0].locationX - posX},${points[0].locationY - posY}`;
-			points.forEach(point => {
+			points.forEach((point) => {
 				path += ` L ${point.locationX - posX},${point.locationY - posY}`;
 			});
 			return path;
@@ -207,7 +209,15 @@ class SignaturePanel extends React.Component<SignaturePanelProps, SignaturePanel
 	 */
 
 	private returnImageData({ paths, points }: { paths: any[]; points: any[] }) {
-		const { onFingerUp, imageFormat, outputType, imageOutputHeight, imageOutputWidth, imageQuality } = this.props;
+		const {
+			onFingerUp,
+			onFingerUpTimeout,
+			imageFormat,
+			outputType,
+			imageOutputHeight,
+			imageOutputWidth,
+			imageQuality,
+		} = this.props;
 		return () => {
 			if (!['jpg', 'png', 'webm', 'raw'].includes(imageFormat)) {
 				onFingerUp(this.renderSvg(paths, points));
@@ -230,7 +240,7 @@ class SignaturePanel extends React.Component<SignaturePanelProps, SignaturePanel
 					const file = await takeSnapshotAsync(this.signatureContainer, options);
 					onFingerUp(file);
 					SignaturePanel.timer = null;
-				}, 1000);
+				}, onFingerUpTimeout);
 			}
 		};
 	}
